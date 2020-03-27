@@ -1,0 +1,10 @@
+type CarInfo @model {
+  id: ID!
+  registration: String
+  latitude: Float
+  longitude: Float
+  mileage: Float
+  fuel_level: Float
+  fuel_liters: Float
+  battery_status: String
+}

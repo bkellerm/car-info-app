@@ -1,0 +1,46 @@
+# this is an auto generated file. This will be overwritten
+mutation CreateCarInfo(
+  $input: CreateCarInfoInput!
+  $condition: ModelCarInfoConditionInput
+) {
+  createCarInfo(input: $input, condition: $condition) {
+    id
+    registration
+    latitude
+    longitude
+    mileage
+    fuel_level
+    fuel_liters
+    battery_status
+  }
+}
+mutation UpdateCarInfo(
+  $input: UpdateCarInfoInput!
+  $condition: ModelCarInfoConditionInput
+) {
+  updateCarInfo(input: $input, condition: $condition) {
+    id
+    registration
+    latitude
+    longitude
+    mileage
+    fuel_level
+    fuel_liters
+    battery_status
+  }
+}
+mutation DeleteCarInfo(
+  $input: DeleteCarInfoInput!
+  $condition: ModelCarInfoConditionInput
+) {
+  deleteCarInfo(input: $input, condition: $condition) {
+    id
+    registration
+    latitude
+    longitude
+    mileage
+    fuel_level
+    fuel_liters
+    battery_status
+  }
+}
