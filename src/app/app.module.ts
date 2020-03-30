@@ -18,7 +18,8 @@ import { MatInputModule } from '@angular/material/input'
 
 import { DebugBarComponent } from './debug-bar/debug-bar.component'
 import { CarTableComponent } from './car-table/car-table.component';
-import { RegistrationDialogComponent } from './car-table/registration-dialog/registration-dialog.component'
+import { RegistrationDialogComponent } from './car-table/registration-dialog/registration-dialog.component';
+import { MapComponent } from './map/map.component'
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { RegistrationDialogComponent } from './car-table/registration-dialog/reg
     AppComponent,
     CarTableComponent,
     DebugBarComponent,
-    RegistrationDialogComponent
+    RegistrationDialogComponent,
+    MapComponent
   ],
   imports: [
     BrowserModule,

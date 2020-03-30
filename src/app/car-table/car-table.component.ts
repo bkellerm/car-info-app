@@ -1,3 +1,4 @@
+import { LocationService } from './../location.service';
 import { Component, OnInit } from '@angular/core'
 import { APIService } from './../API.service'
 import { RegistrationDialogComponent } from './registration-dialog/registration-dialog.component'
@@ -15,16 +16,21 @@ export interface DialogData {
 })
 export class CarTableComponent implements OnInit {
   carInfoList: any
-  displayedColumns = ['registration', 'mileage', 'battery_status', 'fuel']
+  displayedColumns = ['registration', 'mileage', 'battery_status', 'fuel', 'location']
 
   constructor(
       private api: APIService,
-      private dialog: MatDialog
+      private dialog: MatDialog,
+      private locationService: LocationService
     ) {}
 
   ngOnInit() {
     this.updateCarInfoList()
     this.onUpdateCar()
+  }
+
+  showOnMap(el: any) {
+    this.locationService.newLocation(el.last_location_latitude, el.last_location_longitude)
   }
 
   async updateCarInfoList() {
