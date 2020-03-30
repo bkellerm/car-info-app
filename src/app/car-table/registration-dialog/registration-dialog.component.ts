@@ -1,3 +1,4 @@
+import { DialogData } from './../car-table.component';
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
@@ -10,7 +11,7 @@ export class RegistrationDialogComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<RegistrationDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public newRegistration: string
+    @Inject(MAT_DIALOG_DATA) public data: DialogData
   ) { }
 
   ngOnInit() {

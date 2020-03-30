@@ -17,7 +17,8 @@ export class DebugBarComponent implements OnInit {
 
   async resetTable() {
     console.log('reseting table')
-    const response = await this.apiService.ResetCars()
+    let response: any  = 'no api request'
+    response = await this.apiService.ResetCars()
     console.log(response)
   }
 }

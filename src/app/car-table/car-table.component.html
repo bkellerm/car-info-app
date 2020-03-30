@@ -10,7 +10,7 @@
   <ng-container matColumnDef="registration">
     <th mat-header-cell *matHeaderCellDef> Registration </th>
     <td mat-cell *matCellDef="let el"> {{ el.registration }} 
-      <button mat-icon-button aria-label="edit button icon" (click)="changeRegistrationDialog(el.id, 'newRegistration')">
+      <button mat-icon-button aria-label="edit button icon" (click)="changeRegistrationDialog(el.id, el.registration)">
         <mat-icon>edit</mat-icon>
       </button>
     </td>

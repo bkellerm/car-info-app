@@ -4,6 +4,10 @@ import { RegistrationDialogComponent } from './registration-dialog/registration-
 import { MatDialog } from '@angular/material/dialog'
 
 
+export interface DialogData {
+  registration: string
+}
+
 @Component({
   selector: 'app-car-table',
   templateUrl: './car-table.component.html',
@@ -38,22 +42,30 @@ export class CarTableComponent implements OnInit {
   }
 
   changeRegistrationDialog(id: string, registration: string) {
+    // open registration dialog
+    const dialogData: DialogData = {registration}
     const dialogRef = this.dialog.open(RegistrationDialogComponent, {
       width: '250px',
-      data: registration
+      data: dialogData
     });
 
+    // change value accordingly to user input
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      this.changeRegistration(id, result)
-    });
+      // dialog cancelled
+      if (result === undefined) {
+        return
+      }
 
+      // TODO: Input validation
+      // dont use '===' because of inputs like {registration: 12}
+      if (registration.localeCompare(result.registration) !== 0) {
+        this.changeRegistration(id, result.registration)
+      }
+    });
   }
 
   async changeRegistration(id: string, registration: string){
     const input = {id, registration}
-    console.log(input)
     const result = this.api.UpdateCar(input)
   }
-
 }
