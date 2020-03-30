@@ -1,4 +1,7 @@
+import { graphqlOperation } from '@aws-amplify/api';
+import { APIService, ListCarsQuery } from './../API.service';
 import {Component, OnInit} from '@angular/core';
+import { observable } from 'rxjs';
 // import {APIService} from "../API.service";
 
 @Component({
@@ -7,30 +10,22 @@ import {Component, OnInit} from '@angular/core';
   styleUrls: ['./car-table.component.scss']
 })
 export class CarTableComponent implements OnInit {
-  allCarInfo: any[]
+  carInfoList: any
   displayedColumns = ['registration', 'mileage', 'battery_status', 'fuel']
 
-  constructor() { }
+  constructor(private api: APIService) { }
 
   ngOnInit() {
-    console.log('initializing table')
+    this.getCarInfoList()
+    // this.api.OnUpdateCarListener.subscribe(x => {
+    //   console.log('update')
+    //   console.log(x)
+    // })
   }
 
-  async createCarInfoEntry() {
-    const newCarInfoEntry = {
-      registration: 'ZH-123',
-      latitude: 0.0,
-      longitude: 0,
-      mileage: 50,
-      fuel_level: 80,
-      fuel_liters: 65,
-      battery_status: 'GOOD'
-    }
-    // let result = await this.apiService.CreateCarInfo(newCarInfoEntry)
+  async getCarInfoList(){
+    const result = await this.api.ListCars()
+    // console.log(response)
+    this.carInfoList = result.items
   }
-
-  async carInfoList() {
-    // this.allCarInfo = await this.apiService.ListCarInfos()
-  }
-
 }

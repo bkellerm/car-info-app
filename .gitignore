@@ -45,6 +45,10 @@ testem.log
 .DS_Store
 Thumbs.db
 
+
+# IDE
+.vscode
+
 #amplify
 amplify/\#current-cloud-backend
 amplify/.config/local-*
@@ -60,7 +64,3 @@ amplifyconfiguration.json
 amplify-build-config.json
 amplify-gradle-config.json
 amplifyxc.config
-
-
-# IDE
-.vscode
