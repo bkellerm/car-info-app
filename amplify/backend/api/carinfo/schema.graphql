@@ -1,0 +1,15 @@
+type Car @model {
+  id: ID!
+  registration: String
+  mileage: Float
+  fuel_level: Float
+  fuel_liters: Float
+  battery_status: String
+  last_location_longitude: Float!
+  last_location_latitude: Float!
+}
+
+
+type Mutation {
+  resetCars: Boolean @function(name: "resetCarTable-${env}")
+}

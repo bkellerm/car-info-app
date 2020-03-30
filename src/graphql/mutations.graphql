@@ -1,0 +1,49 @@
+# this is an auto generated file. This will be overwritten
+mutation ResetCars {
+  resetCars
+}
+mutation CreateCar(
+  $input: CreateCarInput!
+  $condition: ModelCarConditionInput
+) {
+  createCar(input: $input, condition: $condition) {
+    id
+    registration
+    mileage
+    fuel_level
+    fuel_liters
+    battery_status
+    last_location_longitude
+    last_location_latitude
+  }
+}
+mutation UpdateCar(
+  $input: UpdateCarInput!
+  $condition: ModelCarConditionInput
+) {
+  updateCar(input: $input, condition: $condition) {
+    id
+    registration
+    mileage
+    fuel_level
+    fuel_liters
+    battery_status
+    last_location_longitude
+    last_location_latitude
+  }
+}
+mutation DeleteCar(
+  $input: DeleteCarInput!
+  $condition: ModelCarConditionInput
+) {
+  deleteCar(input: $input, condition: $condition) {
+    id
+    registration
+    mileage
+    fuel_level
+    fuel_liters
+    battery_status
+    last_location_longitude
+    last_location_latitude
+  }
+}

@@ -1,0 +1,11 @@
+<h1 mat-dialog-title>Change Registration</h1>
+<div mat-dialog-content>
+  <p>old value: </p>
+  <mat-form-field>
+    <input matInput [(ngModel)]="data">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onCancelClick()">Close</button>
+  <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Save</button>
+</div>

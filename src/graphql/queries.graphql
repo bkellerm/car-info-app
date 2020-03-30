@@ -1,0 +1,28 @@
+# this is an auto generated file. This will be overwritten
+query GetCar($id: ID!) {
+  getCar(id: $id) {
+    id
+    registration
+    mileage
+    fuel_level
+    fuel_liters
+    battery_status
+    last_location_longitude
+    last_location_latitude
+  }
+}
+query ListCars($filter: ModelCarFilterInput, $limit: Int, $nextToken: String) {
+  listCars(filter: $filter, limit: $limit, nextToken: $nextToken) {
+    items {
+      id
+      registration
+      mileage
+      fuel_level
+      fuel_liters
+      battery_status
+      last_location_longitude
+      last_location_latitude
+    }
+    nextToken
+  }
+}
