@@ -21,12 +21,16 @@ export class CarTableComponent implements OnInit {
   constructor(
       private api: APIService,
       private dialog: MatDialog,
-      private locationService: LocationService
+      private locationService: LocationService,
     ) {}
 
   ngOnInit() {
-    this.updateCarInfoList()
-    this.onUpdateCar()
+    this.api.ResetCars()
+    .catch(err => console.log('failed to reset table'))
+    .finally(() => {
+      this.updateCarInfoList()
+      this.onUpdateCar()
+    })
   }
 
   showOnMap(el: any) {
@@ -40,9 +44,7 @@ export class CarTableComponent implements OnInit {
   }
 
   async onUpdateCar() {
-    this.api.OnUpdateCarListener.subscribe((next) => {
-      console.log('update')
-      console.log(next)
+    this.api.OnUpdateCarListener.subscribe(_ => {
       this.updateCarInfoList()
     })
   }

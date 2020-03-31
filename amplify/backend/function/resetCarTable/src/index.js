@@ -9,68 +9,18 @@ var apiCarinfoGraphQLAPIIdOutput = process.env.API_CARINFO_GRAPHQLAPIIDOUTPUT
 Amplify Params - DO NOT EDIT */
 
 
-const AWS = require('aws-sdk')
-const uuid = require('uuid/v4')
-const region = process.env.REGION
-const CARINFO_CARTABLE_ARN = process.env.API_CARINFO_CARTABLE_ARN
-const docClient = new AWS.DynamoDB.DocumentClient({region})
+const AWS = require('aws-sdk');
+const uuid = require('uuid/v4');
+const fs = require('fs');
+var path = require('path');
+const region = process.env.REGION;
+const CARINFO_CARTABLE_ARN = process.env.API_CARINFO_CARTABLE_ARN;
+const docClient = new AWS.DynamoDB.DocumentClient({region});
 
-const json = [
-    {
-      "location": {
-        "latittude": 47.3799174,
-        "longitude": 8.5367373
-      },
-      "registration": "ZH-123 456",
-      "mlieage": 4356.5,
-      "fuel": {
-        "level": 80,
-        "litters": 38
-      },
-      "bat": "GOOD"
-    },
-    {
-      "location": {
-        "latittude": 47.3753548,
-        "longitude": 8.545299
-      },
-      "registration": "ZH-453 456",
-      "mlieage": 97306.5,
-      "fuel": {
-        "level": 100,
-        "litters": 45
-      },
-      "bat": "GOOD"
-    },
-    {
-      "location": {
-        "latittude": 47.360204,
-        "longitude": 8.5334757
-      },
-      "registration": "ZH-166 98",
-      "mlieage": 12256.5,
-      "fuel": {
-        "level": null,
-        "litters": 33.5
-      },
-      "bat": "GOOD"
-    },
-    {
-      "location": {
-        "latittude": 47.3929301,
-        "longitude": 8.5486769
-      },
-      "registration": "ZH-13 46",
-      "mlieage": 45566.5,
-      "fuel": {
-        "level": 10,
-        "litters": 8
-      },
-      "bat": "GOOD"
-    }
-]
-
-exports.handler = function (event, _, callback) {
+/**
+ *  Deletes all CarTable records and inserts records from ./data.json
+ */
+exports.handler = function (_, _, callback) {
     // extract table name
     const tmp = CARINFO_CARTABLE_ARN.split('/')
     const table_name = tmp[tmp.length - 1]
@@ -79,14 +29,19 @@ exports.handler = function (event, _, callback) {
     removeRecords(table_name)
 
     // TODO: readin JSON from S3
+    const filePath = path.join(process.cwd(),'data.json')
+    const rawData = fs.readFileSync(filePath)
+    const data = JSON.parse(rawData)
 
-    writeCarInfoJsonToDB(json)
+    writeCarInfoJsonToDB(data, table_name)
+      .then(x => {callback(null)})
+      .catch(err => {callback(null, null)})
 };
 
 
-function writeCarInfoJsonToDB(json) {
+function writeCarInfoJsonToDB(json, table) {
   // convert to CarTable formate
-  const items = json.map(x => (
+  const puts = json.map(x => (
     {
         PutRequest: {
             Item: {
@@ -102,18 +57,19 @@ function writeCarInfoJsonToDB(json) {
         }
     }
   ))
+  // add items to CarTable
+  let params = { RequestItems: {} }
+  params.RequestItems[table] = puts
 
-  // Add items to CarTable
-  let params = { RequestItems: {} };
-  params.RequestItems[table_name] = items;
-  docClient.batchWrite(params, (err, data) => {
+  return new Promise(function(resolve, reject) {
+    docClient.batchWrite(params, (err, data) => {
       if (err) {
-          // TODO: fail immediatly?
-          callback(err);
+          console.log('batchWrite error', err)
+          reject(err);
       } else {
-          let response = null;
-          callback(null, response);
+          resolve(data);
       }
+    });
   });
 }
 
@@ -123,23 +79,28 @@ function removeRecords(table) {
   // read as many ids as possible (4KB limit) and then delete
   getRecords(table).then((records) => {
     console.log('records', records);
+    let hasError = false;
     records.forEach(record => {
       deleteRecord(record, table)
         .then(() => {})
-        .catch(err=>{console.log('could not delete this record', record,  err)});
+        .catch(err=>{
+          console.log('could not delete this record', record,  err);
+          hasErrorhasError = true;
+        });
     });
+    // repeat until no more
+    // if (!hasError) {
+    //   removeRecords(table);
+    // }
   }).catch(err => {
-    console.log('catch after forEach', err)
+    console.log('catch after forEach', err);
   });
-
-  // // repeat until no more records
-  // removeRecords(table);
 }
  
 function getRecords(table) {
   const testParams = {
     ProjectionExpression: 'id',
-    TableName: table s
+    TableName: table
   };
   return new Promise((resolve, reject) => 
     docClient.scan(testParams, (err, records) => {
@@ -147,7 +108,7 @@ function getRecords(table) {
         reject(err);
       } else {
         // formate: [{id: 12}, {id:32}, ...]
-        resolve(records.Items)
+        resolve(records.Items);
       }
     })
   );
@@ -161,6 +122,7 @@ function deleteRecord(id, table) {
   return new Promise(function(resolve, reject) {
     docClient.delete(params, function(err, data) {
       if (err) {
+        console.log('failed to delete item with key: ', id)
         reject(err);
       } else {
         resolve();
