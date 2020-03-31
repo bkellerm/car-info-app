@@ -33,7 +33,7 @@ export class CarTableComponent implements OnInit {
     this.locationService.newLocation(el.last_location_latitude, el.last_location_longitude)
   }
 
-  async updateCarInfoList() {
+  public async updateCarInfoList() {
     // TODO: handle error
     const result = await this.api.ListCars()
     this.carInfoList = result.items

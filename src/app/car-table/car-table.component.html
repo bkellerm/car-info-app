@@ -1,11 +1,3 @@
-<button (click)=carInfoList>getCarInfoList</button>
-
-<mat-toolbar color="primary">
-  <mat-toolbar-row>
-  <span>Car Info App</span>
-  </mat-toolbar-row>
-</mat-toolbar>
-
 <table mat-table [dataSource]="carInfoList">
   <ng-container matColumnDef="registration">
     <th mat-header-cell *matHeaderCellDef> Registration </th>

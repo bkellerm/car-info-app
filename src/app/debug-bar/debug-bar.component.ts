@@ -8,20 +8,17 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './debug-bar.component.html',
   styleUrls: ['./debug-bar.component.scss']
 })
-export class DebugBarComponent implements OnInit {
+export class DebugBarComponent {
   counter: Observable<number>
 
 
   constructor(private apiService: APIService) { }
 
-  ngOnInit() {
-  }
-
-
   async resetTable() {
     console.log('reseting table')
     let response: any  = 'no api request'
     response = await this.apiService.ResetCars()
-    console.log(response)
+    console.log('resetCarInfoTable response: ', response)
+    location.reload()
   }
 }
