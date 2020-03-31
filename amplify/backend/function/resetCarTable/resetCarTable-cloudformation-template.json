@@ -96,7 +96,7 @@
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "amplify-car-info-dev-211631-deployment",
-					"S3Key": "amplify-builds/resetCarTable-4b376c4270732b423377-build.zip"
+					"S3Key": "amplify-builds/resetCarTable-50625973624874335773-build.zip"
 				}
 			}
 		},
