@@ -56,15 +56,9 @@
 							"Ref": "AWS::Region"
 						},
 						"API_CARINFO_CARTABLE_NAME": {
-							"Fn::Join": [
-								"-",
-								[
-									"CarTable",
-									{
-										"Ref": "apicarinfoGraphQLAPIIdOutput"
-									}
-								]
-							]
+							"Fn::ImportValue": {
+								"Fn::Sub": "${apicarinfoGraphQLAPIIdOutput}:GetAtt:CarTable:Name"
+							}
 						},
 						"API_CARINFO_CARTABLE_ARN": {
 							"Fn::Join": [
@@ -102,7 +96,7 @@
 				"Timeout": "25",
 				"Code": {
 					"S3Bucket": "amplify-car-info-dev-211631-deployment",
-					"S3Key": "amplify-builds/resetCarTable-2f387853754c48396734-build.zip"
+					"S3Key": "amplify-builds/resetCarTable-4b376c4270732b423377-build.zip"
 				}
 			}
 		},
@@ -209,6 +203,12 @@
 								"dynamodb:Put*",
 								"dynamodb:Create*",
 								"dynamodb:BatchWriteItem",
+								"dynamodb:Get*",
+								"dynamodb:BatchGetItem",
+								"dynamodb:List*",
+								"dynamodb:Describe*",
+								"dynamodb:Scan",
+								"dynamodb:Query",
 								"dynamodb:Delete*"
 							],
 							"Resource": [

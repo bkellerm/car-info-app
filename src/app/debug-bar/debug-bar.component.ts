@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs';
 import { graphqlOperation } from '@aws-amplify/api';
 import { APIService } from './../API.service';
 import { Component, OnInit } from '@angular/core';
@@ -8,6 +9,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./debug-bar.component.scss']
 })
 export class DebugBarComponent implements OnInit {
+  counter: Observable<number>
+
 
   constructor(private apiService: APIService) { }
 

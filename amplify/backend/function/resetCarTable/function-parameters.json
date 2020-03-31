@@ -3,6 +3,7 @@
         "storage": {
             "Car:@model(appsync)": [
                 "create",
+                "read",
                 "delete"
             ]
         }

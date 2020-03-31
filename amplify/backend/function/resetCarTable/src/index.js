@@ -5,6 +5,7 @@ var region = process.env.REGION
 var apiCarinfoCarTableName = process.env.API_CARINFO_CARTABLE_NAME
 var apiCarinfoCarTableArn = process.env.API_CARINFO_CARTABLE_ARN
 var apiCarinfoGraphQLAPIIdOutput = process.env.API_CARINFO_GRAPHQLAPIIDOUTPUT
+
 Amplify Params - DO NOT EDIT */
 
 
@@ -74,52 +75,96 @@ exports.handler = function (event, _, callback) {
     const tmp = CARINFO_CARTABLE_ARN.split('/')
     const table_name = tmp[tmp.length - 1]
 
-    // get all table item ids
-    const testParams = {
-        ProjectionExpression: 'id',
-        ScanFilter: 'true',
-        KeyConditions: {},
-        TableName: table_name 
-    }
-    docClient.query(testParams, (err, data) => {
-        if (err) {
-          console.log(err, 'error deleting')
-        } else {
-          console.log('items')
-          console.log(data.Items.toString())
-        }
-    })
-
+    // remove all records
+    removeRecords(table_name)
 
     // TODO: readin JSON from S3
 
-    // convert to CarTable formate
-    const items = json.map(x => (
-        {
-            PutRequest: {
-                Item: {
-                    id: uuid(),
-                    registration: x.registration,
-                    mileage: x.mlieage,
-                    fuel_level: x.fuel.level,
-                    fuel_liters: x.fuel.litters,
-                    battery_status: x.bat,
-                    last_location_longitude: x.location.longitude,
-                    last_location_latitude: x.location.latittude
-                }
+    writeCarInfoJsonToDB(json)
+};
+
+
+function writeCarInfoJsonToDB(json) {
+  // convert to CarTable formate
+  const items = json.map(x => (
+    {
+        PutRequest: {
+            Item: {
+                id: uuid(),
+                registration: x.registration,
+                mileage: x.mlieage,
+                fuel_level: x.fuel.level,
+                fuel_liters: x.fuel.litters,
+                battery_status: x.bat,
+                last_location_longitude: x.location.longitude,
+                last_location_latitude: x.location.latittude
             }
         }
-    ))
+    }
+  ))
 
-    // Add items to CarTable
-    let params = { RequestItems: {} }
-    params.RequestItems[table_name] = items
-    docClient.batchWrite(params, (err, data) => {
-        if (err) {
-            callback(err)
-        } else {
-            let response = null
-            callback(null, response)
-        }
+  // Add items to CarTable
+  let params = { RequestItems: {} };
+  params.RequestItems[table_name] = items;
+  docClient.batchWrite(params, (err, data) => {
+      if (err) {
+          // TODO: fail immediatly?
+          callback(err);
+      } else {
+          let response = null;
+          callback(null, response);
+      }
+  });
+}
+
+// based one: https://stackoverflow.com/questions/51110377/delete-all-items-in-dynamodb-using-lambda
+function removeRecords(table) {
+  console.log('removeRecords')
+  // read as many ids as possible (4KB limit) and then delete
+  getRecords(table).then((records) => {
+    console.log('records', records);
+    records.forEach(record => {
+      deleteRecord(record, table)
+        .then(() => {})
+        .catch(err=>{console.log('could not delete this record', record,  err)});
+    });
+  }).catch(err => {
+    console.log('catch after forEach', err)
+  });
+
+  // // repeat until no more records
+  // removeRecords(table);
+}
+ 
+function getRecords(table) {
+  const testParams = {
+    ProjectionExpression: 'id',
+    TableName: table s
+  };
+  return new Promise((resolve, reject) => 
+    docClient.scan(testParams, (err, records) => {
+      if (err) {
+        reject(err);
+      } else {
+        // formate: [{id: 12}, {id:32}, ...]
+        resolve(records.Items)
+      }
     })
+  );
+};
+
+function deleteRecord(id, table) {
+  const params = {
+    TableName: table,
+    Key: id
+  };
+  return new Promise(function(resolve, reject) {
+    docClient.delete(params, function(err, data) {
+      if (err) {
+        reject(err);
+      } else {
+        resolve();
+      }
+    });
+  });
 }
