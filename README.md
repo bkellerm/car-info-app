@@ -1,21 +1,26 @@
 # CarInfoApp
 
+## About
+
 Displays a list of cars with information like registration and fuel level. You can change car registrations and show a car's last position on a map.
 
-## Build
-```
-git clone https://github.com/bkellerm/car-info-app.git
-cd car-info-app
-npm install
-```
+## Try It Out
+You can try out a hosted build of the CarInfoApp [here](https://master.d3b1etoqybssyl.amplifyapp.com/).
 
+## Setup
 required NPM, Node >10
+### Get Repo
 ```
 git clone https://github.com/bkellerm/car-info-app.git
 cd car-info-app
-install npm
+```
+### Install Angular and Amplify
+```
 npm install -g @angular/cli
 npm install -g @aws-amplify/cli
+```
+### Setup Amplify
+```
 amplify init
 ```
 ```
@@ -33,7 +38,7 @@ Are you sure you want to continue? (Y/n) Y
 Do you want to update code for your updated GraphQL API (Y/n) Y
 Do you want to update code for your updated GraphQL API (Y/n) n
 ```
-run angular app
+### Start Angular App
 ```
 ng serve --open
 ```
