@@ -5,9 +5,9 @@
 		"env": {
 			"Type": "String"
 		},
-		"apicarinfoGraphQLAPIIdOutput": {
+		"apicarinfoapiGraphQLAPIIdOutput": {
 			"Type": "String",
-			"Default": "apicarinfoGraphQLAPIIdOutput"
+			"Default": "apicarinfoapiGraphQLAPIIdOutput"
 		}
 	},
 	"Conditions": {
@@ -32,12 +32,12 @@
 				"FunctionName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"resetCarTable",
+						"resetcarinfotable",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"resetCarTable",
+									"resetcarinfotable",
 									"-",
 									{
 										"Ref": "env"
@@ -55,12 +55,12 @@
 						"REGION": {
 							"Ref": "AWS::Region"
 						},
-						"API_CARINFO_CARTABLE_NAME": {
+						"API_CARINFOAPI_CARTABLE_NAME": {
 							"Fn::ImportValue": {
-								"Fn::Sub": "${apicarinfoGraphQLAPIIdOutput}:GetAtt:CarTable:Name"
+								"Fn::Sub": "${apicarinfoapiGraphQLAPIIdOutput}:GetAtt:CarTable:Name"
 							}
 						},
-						"API_CARINFO_CARTABLE_ARN": {
+						"API_CARINFOAPI_CARTABLE_ARN": {
 							"Fn::Join": [
 								"",
 								[
@@ -75,14 +75,14 @@
 									":table/",
 									{
 										"Fn::ImportValue": {
-											"Fn::Sub": "${apicarinfoGraphQLAPIIdOutput}:GetAtt:CarTable:Name"
+											"Fn::Sub": "${apicarinfoapiGraphQLAPIIdOutput}:GetAtt:CarTable:Name"
 										}
 									}
 								]
 							]
 						},
-						"API_CARINFO_GRAPHQLAPIIDOUTPUT": {
-							"Ref": "apicarinfoGraphQLAPIIdOutput"
+						"API_CARINFOAPI_GRAPHQLAPIIDOUTPUT": {
+							"Ref": "apicarinfoapiGraphQLAPIIdOutput"
 						}
 					}
 				},
@@ -95,8 +95,8 @@
 				"Runtime": "nodejs12.x",
 				"Timeout": "25",
 				"Code": {
-					"S3Bucket": "amplify-car-info-dev-211631-deployment",
-					"S3Key": "amplify-builds/resetCarTable-50625973624874335773-build.zip"
+					"S3Bucket": "amplify-car-info-app-dev-02648-deployment",
+					"S3Key": "amplify-builds/resetcarinfotable-35384c685470774b4366-build.zip"
 				}
 			}
 		},
@@ -106,12 +106,12 @@
 				"RoleName": {
 					"Fn::If": [
 						"ShouldNotCreateEnvResources",
-						"carinfoLambdaRole1ac313f2",
+						"carinfoappLambdaRolee356cc7c",
 						{
 							"Fn::Join": [
 								"",
 								[
-									"carinfoLambdaRole1ac313f2",
+									"carinfoappLambdaRolee356cc7c",
 									"-",
 									{
 										"Ref": "env"
@@ -227,7 +227,7 @@
 											":table/",
 											{
 												"Fn::ImportValue": {
-													"Fn::Sub": "${apicarinfoGraphQLAPIIdOutput}:GetAtt:CarTable:Name"
+													"Fn::Sub": "${apicarinfoapiGraphQLAPIIdOutput}:GetAtt:CarTable:Name"
 												}
 											}
 										]
@@ -248,7 +248,7 @@
 											":table/",
 											{
 												"Fn::ImportValue": {
-													"Fn::Sub": "${apicarinfoGraphQLAPIIdOutput}:GetAtt:CarTable:Name"
+													"Fn::Sub": "${apicarinfoapiGraphQLAPIIdOutput}:GetAtt:CarTable:Name"
 												}
 											},
 											"/index/*"

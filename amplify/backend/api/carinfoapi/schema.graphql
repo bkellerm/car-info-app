@@ -11,5 +11,5 @@ type Car @model {
 
 
 type Mutation {
-  resetCars: Boolean @function(name: "resetCarTable-${env}")
+  resetCars: Boolean @function(name: "resetcarinfotable-${env}")
 }
