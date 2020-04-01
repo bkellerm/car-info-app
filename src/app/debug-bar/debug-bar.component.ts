@@ -1,5 +1,4 @@
 import { Observable } from 'rxjs';
-import { graphqlOperation } from '@aws-amplify/api';
 import { APIService } from './../API.service';
 import { Component, OnInit } from '@angular/core';
 
@@ -18,7 +17,6 @@ export class DebugBarComponent {
     console.log('reseting table')
     let response: any  = 'no api request'
     response = await this.apiService.ResetCars()
-    console.log('resetCarInfoTable response: ', response)
     location.reload()
   }
 }

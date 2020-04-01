@@ -48,7 +48,6 @@ export class MapComponent implements OnInit, AfterViewInit {
 
   clearMarkers() {
     this.markers.forEach(x => {
-      console.log('this one')
       x.setMap(null)
     })
     this.markers = []
